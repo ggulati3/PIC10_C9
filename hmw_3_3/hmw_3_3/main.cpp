@@ -19,35 +19,43 @@ bool checkFile(const char *s){
     return (bool)check;
 }
 
-vector<string> reverseList(fstream& ifs, const char* fileName){
-    vector<string> reverseList;
-    
-    ifs.seekg(0, ifstream::beg);
-    string line;
-    while(getline(ifs, line)){
-        istringstream iss(line);
-        cout << line; 
+string reverseLine(string line){
+    string str = "";
+    for(long i = line.length()-1; i >= 0; i--){
+        str += line[i];
     }
-              
-    return reverseList;
-    
+    return str;
 }
 
 int main() {
     string input;
+    vector<string> lines;
     cout << "Enter a file name: " ;
     cin >> input;
     const char * fileName = input.c_str();
     bool check = checkFile(fileName);
     while(check){
         fstream ifs;
-        ofstream ofs;
         ifs.open(fileName, fstream::in);
-        
-        reverseList(ifs, fileName);
-        
+        string line;
+        cout << "Original file " << input << " content:" << endl;
+        while(getline(ifs,line)){
+            lines.push_back(line);
+        }
+        for(int i = 0; i < lines.size(); i++){
+            cout << lines[i] << endl;
+            lines[i] = reverseLine(lines[i]);
+        }
         ifs.close();
+        
+        ofstream ofs;
+        ofs.open(fileName, ofstream::out | ofstream::trunc);
+        for(int i = 0; i < lines.size(); i++){
+            ofs << lines[i] << endl;
+        }
+        
         ofs.close();
+        
         cout << "Enter a file name: " ;
         cin >> input;
         check = checkFile(input.c_str());
