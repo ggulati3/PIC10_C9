@@ -52,7 +52,7 @@ int main() {
         while(getline(ifs, line)){
             numOflines++;
         }
-        cout << "Number of lines      = " << numOflines << endl;
+        cout << "Number of lines      =  " << numOflines << endl;
         // get new file
         ifs.close();
         cout << "Enter a file name: ";
