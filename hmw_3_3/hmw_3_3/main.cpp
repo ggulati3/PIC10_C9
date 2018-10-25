@@ -30,36 +30,39 @@ string reverseLine(string line){
 int main() {
     string input;
     vector<string> lines;
-    cout << "Enter a file name: " ;
+    cout << "Enter the name of the file: " ;
     cin >> input;
+    cout << endl;
+    
     const char * fileName = input.c_str();
     bool check = checkFile(fileName);
-    while(check){
-        fstream ifs;
-        ifs.open(fileName, fstream::in);
-        string line;
-        cout << "Original file " << input << " content:" << endl;
-        while(getline(ifs,line)){
-            lines.push_back(line);
-        }
-        for(int i = 0; i < lines.size(); i++){
-            cout << lines[i] << endl;
-            lines[i] = reverseLine(lines[i]);
-        }
-        ifs.close();
-        
-        ofstream ofs;
-        ofs.open(fileName, ofstream::out | ofstream::trunc);
-        for(int i = 0; i < lines.size(); i++){
-            ofs << lines[i] << endl;
-        }
-        
-        ofs.close();
-        
-        cout << "Enter a file name: " ;
-        cin >> input;
-        check = checkFile(input.c_str());
+    if(!check){
+        cerr << "Error: " << strerror(errno);
     }
+    fstream ifs;
+    ifs.open(fileName, fstream::in);
+    string line;
+    cout << "Original file " << input << " content:" << endl;
+    while(getline(ifs,line)){
+        cout << line << endl;
+        lines.push_back(line);
+    }
+    cout << endl;
+    ifs.close();
+    
+    ofstream ofs;
+    ofs.open(fileName, ofstream::out | ofstream::trunc);
+    cout << "Reversed files " << input << " content:" << endl;
+    for(int i = 0; i < lines.size(); i++){
+        lines[i] = reverseLine(lines[i]);
+        cout << lines[i] << endl;
+        ofs << lines[i] << endl;
+    }
+
+
+    ofs.close();
+
+
     
     
     return 0;
